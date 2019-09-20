@@ -123,12 +123,11 @@ def Y_visit_again_no():
     val = int(len([r.comeback for r in return_no]))
     return val
 
-@server.route('/fv_data')
-def fv_data():
-    return f"{Y_visit_again_yes()}"
-
-def leng_first_visit_data_yes():
-    pass
+@server.route('/viewdata')
+def viewdata():
+    db_data = db_session.query(DashGraphs).order_by(DashGraphs.id)
+    data = db_data.all()
+    return render_template('viewdata.html', title=title, data=data)
 
 app = dash.Dash(
     __name__,
@@ -155,7 +154,7 @@ app.layout = html.Div(children=[
             'layout': {
                 'title': 'Dash Graphs Number of Visitors'
             }
-        }
+        },
     ),
     html.Div('''
         This is a random message # place anchor tag here to return home
