@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+<title>
+	{{ tile }}
+</title>
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+
+<div>
+	<form action="{{ url_for('insert_data') }}" method="post">
+		<div>
+			<p>How many times have you visited this website?</p>
+			<p>Complete the form to view the results!</p>
+		</div>
+		<div>
+			<label for="EnterName">What's Your Name?!</label>
+			Name: <input id="EnterName" type="text" name="username" placeholder="enter name" required><br>
+			<label for="FirstVisit">Is this the first time time visiting this Dash Graphs site?</label>
+			<select id="FirstVisit" name="first_visit">
+				<option disabled selected value="">Please Select</option>
+				<option value="yes">Yes</option>
+				<option value="no">No</option>
+			</select><br>
+			<label for="VisitAgain">Would you visit this Dash Graphs site again?</label>
+			<select id="VisitAgain" name="visit_again">
+				<option disabled selected value="">Please Select</option>
+				<option value="yes">Yes</option>
+				<option value="no">No</option>
+			</select><br>
+			<br>
+			<button type="submit">SUBMIT</button>
+		</div>
+	</form>
+</div>
+
+
+{% endblock %}

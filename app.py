@@ -20,69 +20,116 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 # database here
-class FlightNum(Base):
-	__tablename__ = 'flight_num'
-	id = Column('id', Integer, primary_key=True)
-	city = Column('city', String(20))
-	amount = Column('amount', Integer)
+class DashGraphs(Base):
+    __tablename__ = 'dash_graphs'
+    id = Column('id', Integer, primary_key=True)
+    name = Column('name', String(20))
+    f_visit = Column('first_visit', String(3))
+    comeback = Column('visit_again', String(3))
 
-	def __init__(self, city, amount):
-		self.city = city
-		self.amount = amount
+    def __init__(self, name, f_visit, comeback):
+        self.name = name
+        self.f_visit = f_visit
+        self.comeback = comeback
 
 Session = sessionmaker(bind=engine)
 db_session = Session()
 
+title = "Dash Graphs"
+
 @server.route('/')
-def index():
-    return render_template("home.html")
+def home():
+    return render_template('home.html')
+
+@server.route('/insert_data', methods=['GET', 'POST'])
+def insert_data():
+    if request.method == 'GET':
+        return render_template('insert_data.html', title=title)
+    else:
+        name = request.form.get("username")
+        firstVisit = request.form.get("first_visit")
+        visit = request.form.get("visited")
+        visitAgain = request.form.get("visit_again")
+
+        db_entry = DashGraphs(name, firstVisit, visit, visitAgain)
+        db_session.add(db_entry)
+        db_session.commit()
+        flash(f'Thank you {name} for your info!')
+        return render_template('insert_data.html')
+
+# create ALL X axis first
+def X_fv_yes():
+    ''' finds all the entries == yes in first_visit column '''
+    ''' this converts ['yes','yes','yes'] to 3 '''
+    ''' X axis for graph '''
+    fv_data_yes = db_session.query(DashGraphs).filter(DashGraphs.f_visit=="yes").all()
+    val = int(len([fv.f_visit for fv in fv_data_yes]))
+    return val
+
+def X_fv_no():
+    ''' finds all the entries == yes in first_visit column '''
+    ''' this converts ['no','no','no'] to 3 '''
+    ''' X axis for graph '''
+    fv_data_no = db_session.query(DashGraphs).filter(DashGraphs.f_visit=="no").all()
+    val = int(len([fv.f_visit for fv in fv_data_no]))
+    return val
+
+def X_visit_again_yes():
+    ''' finds all the entries == yes in visit_again column '''
+    ''' X axis for graph '''
+    return_yes = db_session.query(DashGraphs).filter(DashGraphs.comeback=="yes").all()
+    val = len([r.comeback for r in return_yes])
+    return val
+
+def X_visit_again_no():
+    ''' finds all the entries == no in visit_again column '''
+    ''' X axis for graph '''
+    return_no = db_session.query(DashGraphs).filter(DashGraphs.comeback=="no").all()
+    val = len([r.comeback for r in return_no])
+    return val
 
 
+# now create ALL Y axis
+def Y_fv_yes():
+    ''' calculates all the entries == yes in first_visit column and puts them in a list'''
+    ''' The list counts from [0, 1, 2 etc] '''
+    ''' Y axis for graph '''
+    fv_data_yes = db_session.query(DashGraphs).filter(DashGraphs.f_visit=="yes").all()
+    val = int(len([fv.f_visit for fv in fv_data_yes]))
+    return val
 
-@server.route('/cities', methods=['GET', 'POST'])
-def cities():
-	place = request.form.get("place")
-	people = request.form.get("people")
-	# '''
-	# input data into database to load graph.  Flask jinja does NOT work
-	# request.form.get("...") does not work.
-	# You can only make single entries into database
-	# '''
-	if request.method == 'GET':	
-		return render_template('cities.html')
-	else:
-		# Add entries into database. 
-		db_data = FlightNum(place, people)
-		db_session.add(db_data)
-		db_session.commit()
-		flash(f'your entry has been logged! CITY:{place} PEOPLE:{people}')
-		return render_template('cities.html')
-
-	
+def Y_fv_no():
+    ''' calculates all the entries == yes in first_visit column and puts them in a list'''
+    ''' The list counts from 0, 1, 2 etc '''
+    ''' Y axis for graph '''
+    fv_data_no = db_session.query(DashGraphs).filter(DashGraphs.f_visit=="no").all()
+    val = int(len([fv.f_visit for fv in fv_data_no]))
+    return val
 
 
-def sf_data():
-	# get all the numbers from san fran
-    city_data = db_session.query(FlightNum).filter(FlightNum.city=="sf").all()
-    return ([s.amount for s in city_data])
+def Y_visit_again_yes():
+    ''' calculates all the entries == yes in first_visit column and puts them in a list'''
+    ''' The list counts from 0, 1, 2 etc '''
+    ''' Y axis for graph '''
+    return_yes = db_session.query(DashGraphs).filter(DashGraphs.comeback=="yes").all()
+    val = int(len([r.comeback for r in return_yes]))
+    return val
 
-def mont_data():
-	# get all numbers from montreal
-	city_data = db_session.query(FlightNum).filter(FlightNum.city=="montreal").all()
-	return ([s.amount for s in city_data])
+def Y_visit_again_no():
+    ''' calculates all the entries == no in first_visit column and puts them in a list'''
+    ''' The list counts from 0, 1, 2 etc '''
+    ''' Y axis for graph '''
+    return_no = db_session.query(DashGraphs).filter(DashGraphs.comeback=="no").all()
+    val = int(len([r.comeback for r in return_no]))
+    return val
 
-def leng_sf():
-	# list length of entries in sf
-    city_data = db_session.query(FlightNum).filter(FlightNum.city=="sf").all()
-    return list(range(len([s.amount for s in city_data])))
+@server.route('/fv_data')
+def fv_data():
+    return f"{Y_visit_again_yes()}"
 
-def leng_mont():
-	# list length of entries in sf
-    city_data = db_session.query(FlightNum).filter(FlightNum.city=="montreal").all()
-    return list(range(len([s.amount for s in city_data])))
+def leng_first_visit_data_yes():
+    pass
 
-
-# dash graph
 app = dash.Dash(
     __name__,
     server=server,
@@ -90,29 +137,29 @@ app = dash.Dash(
 )
 
 app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
+    html.H1(children='Dash Graphs'),
 
     html.Div(children='''
-        Dash: A web application framework for Python.
+        Dash Graphs: A simple web app that displays data from a PostgreSQL database.
     '''),
 
     dcc.Graph(
         id='example-graph',
         figure={
             'data': [
-                {'x': leng_sf(), 'y': sf_data(), 'type': 'bar', 'name': 'SF'},
-                {'x': leng_mont(), 'y': mont_data(), 'type': 'bar', 'name': u'Montréal'},
+                {'x': [X_fv_yes()], 'y': [Y_fv_yes()], 'type': 'bar', 'name': 'First Visit: Yes'},
+                {'x': [X_fv_no()], 'y': [Y_fv_no()], 'type': 'bar', 'name': 'First Visit: No'},
+                {'x': [X_visit_again_yes()], 'y': [Y_visit_again_yes()], 'type': 'bar', 'name': 'Visit Again: Yes'},
+                {'x': [X_visit_again_no()], 'y': [Y_visit_again_no()], 'type': 'bar', 'name': 'Visit Again: No'},
             ],
             'layout': {
-                'title': 'Dash Data Visualization'
+                'title': 'Dash Graphs Number of Visitors'
             }
         }
     ),
-    dcc.Interval(
-        id='interval-component',
-        interval=1*1000, # in milliseconds
-        n_intervals=0
-    )
+    html.Div('''
+        This is a random message # place anchor tag here to return home
+    '''),
 ])
 
 

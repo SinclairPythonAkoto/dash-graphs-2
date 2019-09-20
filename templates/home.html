@@ -1,14 +1,27 @@
 {% extends "layout.html" %}
 
-<title>
-	<!-- {{ title }} -->
-	1st Dash!
-	<meta name="description" content="">
-	<meta name="author" content="SinclairPythonAkoto">
-</title>
-
 {% block content %}
-	<h1>1st Flask-Dash APP!</h1>
-	<p>Please click the link below to view the graph.</p>
-	<a href="/dash/">Click here</a> to display graph.
+
+<h1>Dash Graphs</h1>
+
+<div>
+	<p>
+		This is a simple app that allows the user to view the data in a graph format, 
+		<br>after inserting data into a database.  To do this I have embeded a Dash app within
+		<br>an existing Flask app.
+	</p>
+</div>
+<br>
+<br>
+<div>
+	<div>
+		Click <a href="{{ url_for('insert_data') }}">here</a> to insert data!
+	</div>
+	<div>
+		Click <a href="/dash/">here</a> to view the graph.
+	</div>
+
+</div>
+
+
 {% endblock %}

@@ -1,6 +1,7 @@
-DROP TABLE if exists flight_num;
-CREATE TABLE flight_num (
+DROP TABLE if exists dash_graphs;
+CREATE TABLE dash_graphs (
   id SERIAL PRIMARY KEY,
-  city VARCHAR,
-  amount INTEGER
+  name VARCHAR,
+  first_visit VARCHAR,
+  visit_again VARCHAR
   );
