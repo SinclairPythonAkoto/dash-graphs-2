@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+<title>
+	Cities
+	<meta name="description" content="">
+	<meta name="author" content="SinclairPythonAkoto">
+</title>
+
+{% block content %}
+
+<h1>Insert Cities Page</h1>
+
+<form action="cities" method="post">
+	<div>
+		<p>Below we have two cities to chose between.<br>Once a city has been selected, please enter the amount of flights made from that city. </p><br>
+		<p>Please select an entry you wish to create.</p><br>
+		<select name="place" required>
+			<option disabled selected value="">Select City</option>
+			<option value="sf">San Fransisco</option>
+			<option value="montreal">Montreal</option>
+		</select><br>
+		<input type="number" name="people" placeholder="Enter amount" required>
+		<button type="submit">SUBMIT</button>
+	</div>
+</form>
+
+{% endblock %}
