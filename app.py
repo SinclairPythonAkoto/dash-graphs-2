@@ -147,10 +147,10 @@ app.layout = html.Div(children=[
         id='example-graph',
         figure={
             'data': [
-                {'x': [X_fv_yes()], 'y': [Y_fv_yes()], 'type': 'bar', 'name': 'First Visit: Yes'},
-                {'x': [X_fv_no()], 'y': [Y_fv_no()], 'type': 'bar', 'name': 'First Visit: No'},
-                {'x': [X_visit_again_yes()], 'y': [Y_visit_again_yes()], 'type': 'bar', 'name': 'Visit Again: Yes'},
-                {'x': [X_visit_again_no()], 'y': [Y_visit_again_no()], 'type': 'bar', 'name': 'Visit Again: No'},
+                {'x': [X_fv_yes()], 'y': [Y_fv_yes()], 'type': 'bar', 'name': 'Regular Visitors'},
+                {'x': [X_fv_no()], 'y': [Y_fv_no()], 'type': 'bar', 'name': 'New Vistors'},
+                {'x': [X_visit_again_yes()], 'y': [Y_visit_again_yes()], 'type': 'bar', 'name': 'Would Return'},
+                {'x': [X_visit_again_no()], 'y': [Y_visit_again_no()], 'type': 'bar', 'name': 'Would Not Return'},
             ],
             'layout': {
                 'title': 'Dash Graphs Number of Visitors'
