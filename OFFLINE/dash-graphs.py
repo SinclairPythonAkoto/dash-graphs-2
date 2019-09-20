@@ -172,7 +172,7 @@ app.layout = html.Div(children=[
                 {'x': [X_visit_again_no()], 'y': [Y_visit_again_no()], 'type': 'bar', 'name': 'Visit Again: No'},
             ],
             'layout': {
-                'title': 'Dash Graphs Number of Visitors'
+                'title': 'Dash Graph 1'
             },
         },
 
@@ -181,13 +181,13 @@ app.layout = html.Div(children=[
         id='example-graph2',
         figure={
             'data': [
-            	{'x': [X_fv_yes()], 'y': [Y_fv_yes()], 'type': 'bar', 'name': 'First Visit: Yes'},
-                {'x': [X_fv_no()], 'y': [Y_fv_no()], 'type': 'bar', 'name': 'First Visit: No'},
+            	{'x': [1, 2, 3], 'y': [2, 3, 5], 'type': 'bar', 'name': 'First Visit: Yes'},
+                {'x': [1, 2, 3], 'y': [6, 9, 3], 'type': 'bar', 'name': 'First Visit: No'},
                 {'x': [X_visit_again_yes()], 'y': [Y_visit_again_yes()], 'type': 'bar', 'name': 'Visit Again: Yes'},
-                {'x': [X_visit_again_no()], 'y': [Y_visit_again_no()], 'type': 'bar', 'name': 'Visit Again: No'},
+                {'x': [1, 2, 3, 4], 'y': [2, 5, 7, 9], 'type': 'bar', 'name': 'Visit Again: No'},
             ],
             'layout': {
-                'title': 'Dash Graphs Number of Visitors'
+                'title': 'Dash Graph 2'
             },
         },
 
