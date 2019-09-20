@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+
+<table>
+	<tr>
+		<th>ID</th>
+		<th>NAME</th>
+		<th>FIRST VISIT</th>
+		<th>RETURN VISIT</th>
+	</tr>
+	{% for d in data %}
+	<tr>
+		<td>{{ d.id }}</td>
+		<td>{{ d.name }}</td>
+		<td>{{ d.first_visit }}</td>
+		<td>{{ d.visit_again }}</td>
+	</tr>
+	{% endfor %}
+</table>
+<br>
+<a href="/dash/">Click Here</a> to view your graph!
+
+
+{% endblock %}

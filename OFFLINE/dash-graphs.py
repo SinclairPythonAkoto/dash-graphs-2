@@ -143,8 +143,11 @@ def Y_visit_again_no():
 def fv_data():
 	return f"{Y_visit_again_yes()}"
 
-def leng_first_visit_data_yes():
-	pass
+@server.route('/viewdata')
+def viewdata():
+	db_data = db_session.query(DashGraphs).order_by(DashGraphs.id)
+	data = db_data.all()
+	return render_template('viewdata.html', title=title, data=data)
 
 app = dash.Dash(
     __name__,
@@ -170,8 +173,24 @@ app.layout = html.Div(children=[
             ],
             'layout': {
                 'title': 'Dash Graphs Number of Visitors'
-            }
-        }
+            },
+        },
+
+    ),
+    dcc.Graph(
+        id='example-graph2',
+        figure={
+            'data': [
+            	{'x': [X_fv_yes()], 'y': [Y_fv_yes()], 'type': 'bar', 'name': 'First Visit: Yes'},
+                {'x': [X_fv_no()], 'y': [Y_fv_no()], 'type': 'bar', 'name': 'First Visit: No'},
+                {'x': [X_visit_again_yes()], 'y': [Y_visit_again_yes()], 'type': 'bar', 'name': 'Visit Again: Yes'},
+                {'x': [X_visit_again_no()], 'y': [Y_visit_again_no()], 'type': 'bar', 'name': 'Visit Again: No'},
+            ],
+            'layout': {
+                'title': 'Dash Graphs Number of Visitors'
+            },
+        },
+
     ),
     html.Div('''
     	This is a random message # place anchor tag here to return home
